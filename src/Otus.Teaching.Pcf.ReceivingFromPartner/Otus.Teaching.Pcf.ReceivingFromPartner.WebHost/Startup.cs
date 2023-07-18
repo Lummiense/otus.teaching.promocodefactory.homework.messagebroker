@@ -103,12 +103,11 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.WebHost
         private static void RabbitConfigure(IRabbitMqBusFactoryConfigurator configurator)
         {
             //TODO: вынести в конфигурауцию
-            configurator.Host("hawk.rmq.cloudamqp.com",  
-                "iatvfquz",
+            configurator.Host("localhost",
                 h =>
                 {
-                    h.Username("iatvfquz");
-                    h.Password("G68bk0zxzH0ncOvMlmfyYapLaCqwjiRi");
+                    h.Username("rmuser");
+                    h.Password("rmpassword");
                 });
         }
     }   
