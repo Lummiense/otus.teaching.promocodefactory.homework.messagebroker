@@ -17,6 +17,7 @@ using Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess.Data;
 using Otus.Teaching.Pcf.ReceivingFromPartner.DataAccess.Repositories;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Integration;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
+using MassTransit;
 
 namespace Otus.Teaching.Pcf.ReceivingFromPartner.WebHost
 {
@@ -48,7 +49,13 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.WebHost
             {
                 c.BaseAddress = new Uri(Configuration["IntegrationSettings:AdministrationApiUrl"]);
             });
-            
+            services.AddMassTransit(x => {
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    RabbitConfigure(cfg);
+                });
+            });           
+
             services.AddDbContext<DataContext>(x =>
             {
                 //x.UseSqlite("Filename=PromocodeFactoryReceivingFromPartnerDb.sqlite");
@@ -93,5 +100,16 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.WebHost
             
             dbInitializer.InitializeDb();
         }
-    }
+        private static void RabbitConfigure(IRabbitMqBusFactoryConfigurator configurator)
+        {
+            //TODO: вынести в конфигурауцию
+            configurator.Host("hawk.rmq.cloudamqp.com",  
+                "iatvfquz",
+                h =>
+                {
+                    h.Username("iatvfquz");
+                    h.Password("G68bk0zxzH0ncOvMlmfyYapLaCqwjiRi");
+                });
+        }
+    }   
 }

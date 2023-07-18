@@ -1,5 +1,15 @@
 version: '3'
 services:
+  #Messages
+  rabbitmq:
+    image: rabbitmq:3.10.7-management
+    hostname: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=rmuser
+      - RABBITMQ_DEFAULT_PASS=rmpassword
+    ports:
+      - 15672:15672
   #Administration Api
   promocode-factory-administration-api:
     build: src/Otus.Teaching.Pcf.Administration/
@@ -11,6 +21,12 @@ services:
       - "ConnectionStrings:PromocodeFactoryAdministrationDb=Host=promocode-factory-administration-db;Database=promocode_factory_administration_db;Username=postgres;Password=docker"          
     depends_on: 
       - promocode-factory-administration-db
+    deploy:
+        resources:
+            limits:
+                memory: 512m
+            reservations:
+                memory: 128m
   #Administration Db
   promocode-factory-administration-db:
     image: "postgres:9.6.17"
@@ -20,6 +36,12 @@ services:
       - 5433:5432
     environment: 
       - POSTGRES_PASSWORD=docker
+    deploy:
+            resources:
+                limits:
+                    memory: 512m
+                reservations:
+                    memory: 128m     
 
   #ReceivingFromPartner Api
   promocode-factory-receiving-from-partner-api:
@@ -34,6 +56,12 @@ services:
       - "IntegrationSettings:AdministrationApiUrl=http://promocode-factory-administration-api"       
     depends_on: 
       - promocode-factory-receiving-from-partner-db
+    deploy:
+            resources:
+                limits:
+                    memory: 512m
+                reservations:
+                    memory: 128m
   #ReceivingFromPartner Db
   promocode-factory-receiving-from-partner-db:
     image: "postgres:9.6.17"
@@ -43,6 +71,12 @@ services:
       - 5434:5432
     environment: 
       - POSTGRES_PASSWORD=docker
+    deploy:
+            resources:
+                limits:
+                    memory: 512m
+                reservations:
+                    memory: 128m
   
   #GivingToCustomer Api
   promocode-factory-giving-to-customer-api:
@@ -55,6 +89,12 @@ services:
       - "ConnectionStrings:PromocodeFactoryGivingToCustomerDb=Host=promocode-factory-giving-to-customer-db;Database=promocode_factory_giving_to_customer_db;Username=postgres;Password=docker"          
     depends_on: 
       - promocode-factory-giving-to-customer-db
+    deploy:
+            resources:
+                limits:
+                    memory: 512m
+                reservations:
+                    memory: 128m
   #GivingToCustomer Db
   promocode-factory-giving-to-customer-db:
     image: "postgres:9.6.17"
@@ -64,3 +104,9 @@ services:
       - 5435:5432
     environment: 
       - POSTGRES_PASSWORD=docker
+    deploy:
+            resources:
+                limits:
+                    memory: 512m
+                reservations:
+                    memory: 128m
