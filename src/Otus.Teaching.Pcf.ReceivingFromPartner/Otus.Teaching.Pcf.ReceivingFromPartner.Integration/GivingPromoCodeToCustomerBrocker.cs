@@ -32,9 +32,7 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.Integration
                 PartnerManagerId = promoCode.PartnerManagerId
             };
 
-            //var response = await _busControl.Publish(JsonSerializer.Serialize(dto, typeof(GivePromoCodeToCustomerDto)));
-
-            response.EnsureSuccessStatusCode();
+            await _busControl.Publish<GivePromoCodeToCustomerDto>(dto);
         }
     }
 }
