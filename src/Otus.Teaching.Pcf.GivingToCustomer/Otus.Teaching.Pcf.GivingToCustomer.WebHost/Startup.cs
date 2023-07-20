@@ -17,6 +17,8 @@ using Otus.Teaching.Pcf.GivingToCustomer.DataAccess.Data;
 using Otus.Teaching.Pcf.GivingToCustomer.DataAccess.Repositories;
 using Otus.Teaching.Pcf.GivingToCustomer.Integration;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
+using MassTransit;
+using Otus.Teaching.Pcf.GivingToCustomer.Integration.Consumers;
 
 namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost
 {
@@ -45,7 +47,14 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost
                 x.UseSnakeCaseNamingConvention();
                 x.UseLazyLoadingProxies();
             });
-
+            services.AddMassTransit(x => {
+                x.AddConsumer<PromoConsumer>();
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    RabbitConfigure(cfg);
+                    RegisterEndPoints(cfg);
+                });
+            });
             services.AddOpenApiDocument(options =>
             {
                 options.Title = "PromoCode Factory Giving To Customer API Doc";
@@ -81,6 +90,28 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost
             });
             
             dbInitializer.InitializeDb();
+        }
+        private static void RabbitConfigure(IRabbitMqBusFactoryConfigurator configurator)
+        {
+            //TODO: вынести в конфигурауцию
+            configurator.Host("rabbitmq://localhost",
+                h =>
+                {
+                    h.Username("rmuser");
+                    h.Password("rmpassword");
+                });
+        }
+        private static void RegisterEndPoints(IRabbitMqBusFactoryConfigurator configurator)
+        {
+            configurator.ReceiveEndpoint($"masstransit_event_queue_1", e =>
+            {
+                e.Consumer<PromoConsumer>();
+                e.UseMessageRetry(r =>
+                {
+                    r.Incremental(3, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+                });
+            });
+
         }
     }
 }
