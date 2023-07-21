@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using Newtonsoft.Json;
+using Otus.Teaching.Pcf.ReceivingFromPartner.Core.Abstractions.Gateways;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Core.Domain;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Integration.Dto;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Otus.Teaching.Pcf.ReceivingFromPartner.Integration
 {
-    public class GivingPromoCodeToCustomerBrocker
+    public class GivingPromoCodeToCustomerBrocker:IGivingPromoCodeToCustomerBrocker
     {
         private readonly IBusControl _busControl;
 

@@ -38,6 +38,7 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.WebHost
                 x.SuppressAsyncSuffixInActionNames = false);
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<INotificationGateway, NotificationGateway>();
+            services.AddScoped<IGivingPromoCodeToCustomerBrocker, GivingPromoCodeToCustomerBrocker>();
             services.AddScoped<IDbInitializer, EfDbInitializer>();
 
             services.AddHttpClient<IGivingPromoCodeToCustomerGateway,GivingPromoCodeToCustomerGateway>(c =>

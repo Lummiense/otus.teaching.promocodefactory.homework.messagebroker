@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Otus.Teaching.Pcf.GivingToCustomer.Core\Otus.Teaching.Pcf.GivingToCustomer.Core.csproj" />
+      <ProjectReference Include="..\Otus.Teaching.Pcf.GivingToCustomer.DataAccess\Otus.Teaching.Pcf.GivingToCustomer.DataAccess.csproj" />
     </ItemGroup>
 
 </Project>
