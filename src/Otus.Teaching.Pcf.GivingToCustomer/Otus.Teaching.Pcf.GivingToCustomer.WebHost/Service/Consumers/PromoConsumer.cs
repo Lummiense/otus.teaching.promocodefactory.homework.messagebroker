@@ -4,6 +4,7 @@ using Otus.Teaching.Pcf.GivingToCustomer.Core.Domain;
 using Otus.Teaching.Pcf.GivingToCustomer.DataAccess;
 using Otus.Teaching.Pcf.GivingToCustomer.DataAccess.Repositories;
 using Otus.Teaching.Pcf.GivingToCustomer.Integration.DTO;
+using Otus.Teaching.Pcf.GivingToCustomer.WebHost.Service;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,25 +12,17 @@ using System.Threading.Tasks;
 
 namespace Otus.Teaching.Pcf.GivingToCustomer.Integration.Consumers
 {
-    public class PromoConsumer:EfRepository<PromoCode>,IConsumer
+    public class PromoConsumer:IConsumer<GivePromoCodeToCustomerDto>
     {
-        DataContext _dataContext;
-        public PromoConsumer(DataContext dataContext) : base(dataContext)
+        private readonly IPromoCodeService _promoCodeservice;
+        public PromoConsumer(IPromoCodeService promoCodeService)
         {
-            _dataContext = dataContext;
+            _promoCodeservice = promoCodeService;
         }
 
         public async Task Consume(ConsumeContext<GivePromoCodeToCustomerDto> context)
         {
-            var code = context.Message;
-            try
-            {
-                await _dataContext.AddAsync(code);
-            }
-            catch(Exception ex) 
-            {
-                throw(ex);
-            }                 
+            await _promoCodeservice.GivePromoCodesToCustomersWithPreferenceAsync(context.Message);     
         }        
     }
 }

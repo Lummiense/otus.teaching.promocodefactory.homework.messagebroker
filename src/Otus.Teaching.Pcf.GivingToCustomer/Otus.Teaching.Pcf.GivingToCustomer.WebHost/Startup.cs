@@ -19,6 +19,7 @@ using Otus.Teaching.Pcf.GivingToCustomer.Integration;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using MassTransit;
 using Otus.Teaching.Pcf.GivingToCustomer.Integration.Consumers;
+using Otus.Teaching.Pcf.GivingToCustomer.Integration.Service;
 
 namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost
 {
@@ -55,6 +56,7 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost
                     RegisterEndPoints(cfg);
                 });
             });
+            services.AddHostedService<MassTransitService>();
             services.AddOpenApiDocument(options =>
             {
                 options.Title = "PromoCode Factory Giving To Customer API Doc";
