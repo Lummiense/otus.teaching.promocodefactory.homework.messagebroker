@@ -1,11 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Castle.Core.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,7 +13,7 @@ using Otus.Teaching.Pcf.GivingToCustomer.DataAccess.Repositories;
 using Otus.Teaching.Pcf.GivingToCustomer.Integration;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using MassTransit;
-using Otus.Teaching.Pcf.GivingToCustomer.Integration.Consumers;
+using Otus.Teaching.Pcf.GivingToCustomer.WebHost.Service.Consumers;
 using Otus.Teaching.Pcf.GivingToCustomer.Integration.Service;
 using Otus.Teaching.Pcf.GivingToCustomer.WebHost.Service;
 
@@ -109,7 +104,7 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost
         {
             configurator.ReceiveEndpoint($"masstransit_event_queue_1", e =>
             {
-                e.ConfigureConsumer<PromoConsumer>(context);
+                e.Consumer<PromoConsumer>();
                 e.UseMessageRetry(r =>
                 {
                     r.Incremental(3, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
