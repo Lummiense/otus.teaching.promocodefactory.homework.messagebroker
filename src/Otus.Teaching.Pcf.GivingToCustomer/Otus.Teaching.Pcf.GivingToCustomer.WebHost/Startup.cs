@@ -20,6 +20,7 @@ using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using MassTransit;
 using Otus.Teaching.Pcf.GivingToCustomer.Integration.Consumers;
 using Otus.Teaching.Pcf.GivingToCustomer.Integration.Service;
+using Otus.Teaching.Pcf.GivingToCustomer.WebHost.Service;
 
 namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost
 {
@@ -41,6 +42,7 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<INotificationGateway, NotificationGateway>();
             services.AddScoped<IDbInitializer, EfDbInitializer>();
+            services.AddScoped<IPromoCodeService, PromoCodeService>();
             services.AddDbContext<DataContext>(x =>
             {
                 //x.UseSqlite("Filename=PromocodeFactoryGivingToCustomerDb.sqlite");
@@ -107,7 +109,7 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost
         {
             configurator.ReceiveEndpoint($"masstransit_event_queue_1", e =>
             {
-                e.Consumer<PromoConsumer>();
+                e.ConfigureConsumer<PromoConsumer>(context);
                 e.UseMessageRetry(r =>
                 {
                     r.Incremental(3, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));

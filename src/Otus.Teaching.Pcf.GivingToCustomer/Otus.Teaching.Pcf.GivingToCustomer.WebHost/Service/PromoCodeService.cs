@@ -2,7 +2,7 @@
 using Otus.Teaching.Pcf.GivingToCustomer.Core.Abstractions.Repositories;
 using Otus.Teaching.Pcf.GivingToCustomer.Core.Domain;
 using Otus.Teaching.Pcf.GivingToCustomer.Integration.DTO;
-using Otus.Teaching.Pcf.ReceivingFromPartner.WebHost.Mappers;
+using Otus.Teaching.Pcf.GivingToCustomer.WebHost.Mappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +38,7 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost.Service
                 .GetWhere(d => d.Preferences.Any(x =>
                     x.Preference.Id == preference.Id));
 
-            PromoCode promoCode = PromoCodeMapper.MapFromModel(dto, preference, customers);
+            PromoCode promoCode = PromoCodeMapper.MapFromDTO(dto, preference, customers);
 
             await _promoCodesRepository.AddAsync(promoCode);
         }
