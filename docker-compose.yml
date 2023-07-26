@@ -3,6 +3,7 @@ services:
   #Messages
   rabbitmq:
     image: rabbitmq:3.10.7-management
+    container_name: 'rabbitmq'
     hostname: rabbitmq
     restart: always
     environment:
@@ -21,6 +22,7 @@ services:
       - "ConnectionStrings:PromocodeFactoryAdministrationDb=Host=promocode-factory-administration-db;Database=promocode_factory_administration_db;Username=postgres;Password=docker"          
     depends_on: 
       - promocode-factory-administration-db
+      - rabbitmq
     deploy:
         resources:
             limits:
@@ -56,6 +58,7 @@ services:
       - "IntegrationSettings:AdministrationApiUrl=http://promocode-factory-administration-api"       
     depends_on: 
       - promocode-factory-receiving-from-partner-db
+      - rabbitmq
     deploy:
             resources:
                 limits:
@@ -89,6 +92,7 @@ services:
       - "ConnectionStrings:PromocodeFactoryGivingToCustomerDb=Host=promocode-factory-giving-to-customer-db;Database=promocode_factory_giving_to_customer_db;Username=postgres;Password=docker"          
     depends_on: 
       - promocode-factory-giving-to-customer-db
+      - rabbitmq
     deploy:
             resources:
                 limits:
