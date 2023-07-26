@@ -16,6 +16,9 @@ using Otus.Teaching.Pcf.Administration.DataAccess.Data;
 using Otus.Teaching.Pcf.Administration.DataAccess.Repositories;
 using Otus.Teaching.Pcf.Administration.Core.Domain.Administration;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
+using Otus.Teaching.Pcf.Administration.WebHost.Service;
+using MassTransit;
+using Otus.Teaching.Pcf.Administration.WebHost.Service.Consumers;
 
 namespace Otus.Teaching.Pcf.Administration.WebHost
 {
@@ -36,6 +39,17 @@ namespace Otus.Teaching.Pcf.Administration.WebHost
                 x.SuppressAsyncSuffixInActionNames = false);
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbInitializer, EfDbInitializer>();
+            services.AddScoped<IAdminPromocodeService, AdminPromocodeService>();
+            services.AddMassTransit(x => {
+                x.AddConsumer<ManageConsumer>();
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    RabbitConfigure(cfg);
+                    //RegisterEndPoints(cfg);
+                    cfg.ConfigureEndpoints(context);
+                });
+            });
+            services.AddHostedService<MassTransitService>();
             services.AddDbContext<DataContext>(x =>
             {
                 //x.UseSqlite("Filename=PromocodeFactoryAdministrationDb.sqlite");
@@ -79,6 +93,16 @@ namespace Otus.Teaching.Pcf.Administration.WebHost
             });
             
             dbInitializer.InitializeDb();
+        }
+        private static void RabbitConfigure(IRabbitMqBusFactoryConfigurator configurator)
+        {
+            //TODO: вынести в конфигурауцию
+            configurator.Host("rabbitmq://localhost",
+                h =>
+                {
+                    h.Username("rmuser");
+                    h.Password("rmpassword");
+                });
         }
     }
 }

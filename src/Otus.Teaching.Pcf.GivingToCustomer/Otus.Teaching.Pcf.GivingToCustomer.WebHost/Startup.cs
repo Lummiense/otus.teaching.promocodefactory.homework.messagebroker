@@ -50,7 +50,8 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     RabbitConfigure(cfg);
-                    RegisterEndPoints(cfg);
+                    //RegisterEndPoints(cfg);
+                    cfg.ConfigureEndpoints(context);
                 });
             });
             services.AddHostedService<MassTransitService>();
@@ -100,7 +101,7 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost
                     h.Password("rmpassword");
                 });
         }
-        private static void RegisterEndPoints(IRabbitMqBusFactoryConfigurator configurator)
+       /* private static void RegisterEndPoints(IRabbitMqBusFactoryConfigurator configurator)
         {
             configurator.ReceiveEndpoint($"masstransit_event_queue_1", e =>
             {
@@ -111,6 +112,6 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost
                 });
             });
 
-        }
+        }*/
     }
 }
