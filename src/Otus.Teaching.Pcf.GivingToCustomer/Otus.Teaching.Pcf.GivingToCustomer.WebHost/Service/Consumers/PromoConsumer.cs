@@ -1,5 +1,5 @@
 ﻿using MassTransit;
-using Otus.Teaching.Pcf.GivingToCustomer.Integration.DTO;
+using Otus.Teaching.Pcf.Message;
 using System.Threading.Tasks;
 
 namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost.Service.Consumers

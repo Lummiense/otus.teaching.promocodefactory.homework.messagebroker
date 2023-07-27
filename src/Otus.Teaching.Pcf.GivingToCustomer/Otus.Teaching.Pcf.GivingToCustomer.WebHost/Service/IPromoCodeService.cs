@@ -1,4 +1,4 @@
-﻿using Otus.Teaching.Pcf.GivingToCustomer.Integration.DTO;
+﻿using Otus.Teaching.Pcf.Message;
 using System;
 using System.Collections.Generic;
 using System.Text;

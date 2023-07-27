@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Core.Abstractions.Gateways;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Core.Domain;
-using Otus.Teaching.Pcf.ReceivingFromPartner.Integration.Dto;
+using Otus.Teaching.Pcf.Message;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

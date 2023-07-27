@@ -10,7 +10,12 @@ services:
       - RABBITMQ_DEFAULT_USER=rmuser
       - RABBITMQ_DEFAULT_PASS=rmpassword
     ports:
+      - 5672:5672
       - 15672:15672
+    networks:
+      rabbitmq_go_net:
+          
+
   #Administration Api
   promocode-factory-administration-api:
     build: src/Otus.Teaching.Pcf.Administration/
@@ -114,3 +119,6 @@ services:
                     memory: 512m
                 reservations:
                     memory: 128m
+networks:
+  rabbitmq_go_net:
+    driver: bridge

@@ -1,6 +1,6 @@
 ﻿using Otus.Teaching.Pcf.Administration.Core.Abstractions.Repositories;
 using Otus.Teaching.Pcf.Administration.Core.Domain.Administration;
-using Otus.Teaching.Pcf.Administration.WebHost.Service.DTO;
+using Otus.Teaching.Pcf.Message;
 using System;
 using System.Threading.Tasks;
 
@@ -16,7 +16,7 @@ namespace Otus.Teaching.Pcf.Administration.WebHost.Service
 
         public async Task UpdateAppliedPromocodesAsync(GivePromoCodeToCustomerDto dto)
         {
-            var employee = await _employeeRepository.GetByIdAsync(dto.PartnerManagerId.Value);
+            var employee = await _employeeRepository.GetByIdAsync(dto.PartnerId);
             if (employee == null)    
             {
                 throw new ArgumentNullException();

@@ -23,7 +23,7 @@ namespace Otus.Teaching.Pcf.ReceivingFromPartner.WebHost.Controllers
         {
             _preferencesRepository = preferencesRepository;
         }
-        
+
         /// <summary>
         /// Получить список предпочтений
         /// </summary>

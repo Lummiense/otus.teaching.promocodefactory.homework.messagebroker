@@ -97,7 +97,7 @@ namespace Otus.Teaching.Pcf.Administration.WebHost
         private static void RabbitConfigure(IRabbitMqBusFactoryConfigurator configurator)
         {
             //TODO: вынести в конфигурауцию
-            configurator.Host("rabbitmq://localhost",
+            configurator.Host("localhost",
                 h =>
                 {
                     h.Username("rmuser");

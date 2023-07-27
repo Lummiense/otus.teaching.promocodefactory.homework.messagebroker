@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Otus.Teaching.Pcf.Administration.WebHost.Service.DTO
+namespace Otus.Teaching.Pcf.Message
 {
     public class GivePromoCodeToCustomerDto
     {

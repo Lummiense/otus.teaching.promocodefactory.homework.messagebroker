@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Internal;
 using Otus.Teaching.Pcf.GivingToCustomer.Core.Abstractions.Repositories;
 using Otus.Teaching.Pcf.GivingToCustomer.Core.Domain;
-using Otus.Teaching.Pcf.GivingToCustomer.Integration.DTO;
+using Otus.Teaching.Pcf.Message;
 using Otus.Teaching.Pcf.GivingToCustomer.WebHost.Mappers;
 using System;
 using System.Collections.Generic;
