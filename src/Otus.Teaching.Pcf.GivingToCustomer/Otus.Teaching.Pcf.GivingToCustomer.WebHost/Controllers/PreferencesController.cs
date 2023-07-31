@@ -24,7 +24,7 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost.Controllers
             _preferencesRepository = preferencesRepository;
         }
 
-        /// <summary>
+        /*/// <summary>
         /// Получить список предпочтений
         /// </summary>
         /// <returns></returns>
@@ -40,6 +40,6 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost.Controllers
             }).ToList();
 
             return Ok(response);
-        }
+        }*/
     }
 }
