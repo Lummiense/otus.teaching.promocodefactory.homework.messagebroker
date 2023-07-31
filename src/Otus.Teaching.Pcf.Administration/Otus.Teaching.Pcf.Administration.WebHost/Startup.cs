@@ -47,6 +47,10 @@ namespace Otus.Teaching.Pcf.Administration.WebHost
                     RabbitConfigure(cfg);
                     //RegisterEndPoints(cfg);
                     cfg.ConfigureEndpoints(context);
+                    cfg.UseMessageRetry(r =>
+                    {
+                        r.Incremental(3, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+                    });
                 });
             });
             services.AddHostedService<MassTransitService>();

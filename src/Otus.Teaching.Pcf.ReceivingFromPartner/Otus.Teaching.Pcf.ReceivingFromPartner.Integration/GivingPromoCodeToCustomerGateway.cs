@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Core.Abstractions.Gateways;
 using Otus.Teaching.Pcf.ReceivingFromPartner.Core.Domain;
-using Otus.Teaching.Pcf.ReceivingFromPartner.Integration.Dto;
+using Otus.Teaching.Pcf.Message;
 
 namespace Otus.Teaching.Pcf.ReceivingFromPartner.Integration
 {

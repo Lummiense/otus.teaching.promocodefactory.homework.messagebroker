@@ -16,7 +16,7 @@ namespace Otus.Teaching.Pcf.Administration.WebHost.Service
 
         public async Task UpdateAppliedPromocodesAsync(GivePromoCodeToCustomerDto dto)
         {
-            var employee = await _employeeRepository.GetByIdAsync(dto.PartnerId);
+            var employee = await _employeeRepository.GetByIdAsync(dto.PartnerManagerId.Value);
             if (employee == null)    
             {
                 throw new ArgumentNullException();
