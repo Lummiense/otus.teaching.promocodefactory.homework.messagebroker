@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Otus.Teaching.Pcf.Administration.WebHost.Models;
 using Otus.Teaching.Pcf.Administration.Core.Abstractions.Repositories;
 using Otus.Teaching.Pcf.Administration.Core.Domain.Administration;
+using Otus.Teaching.Pcf.Administration.WebHost.Service;
+using Otus.Teaching.Pcf.Message;
 
 namespace Otus.Teaching.Pcf.Administration.WebHost.Controllers
 {
@@ -18,10 +20,12 @@ namespace Otus.Teaching.Pcf.Administration.WebHost.Controllers
         : ControllerBase
     {
         private readonly IRepository<Employee> _employeeRepository;
+        private readonly IAdminPromocodeService _adminPromoCodeService;
 
-        public EmployeesController(IRepository<Employee> employeeRepository)
+        public EmployeesController(IRepository<Employee> employeeRepository, IAdminPromocodeService adminPromocodeService)
         {
             _employeeRepository = employeeRepository;
+            _adminPromoCodeService = adminPromocodeService;
         }
         
         /// <summary>
@@ -83,14 +87,20 @@ namespace Otus.Teaching.Pcf.Administration.WebHost.Controllers
         
         public async Task<IActionResult> UpdateAppliedPromocodesAsync(Guid id)
         {
-            var employee = await _employeeRepository.GetByIdAsync(id);
+            var dto = new GivePromoCodeToCustomerDto()
+            {
+                PartnerManagerId = id
+            };
+            await _adminPromoCodeService.UpdateAppliedPromocodesAsync(dto);
+
+            /*var employee = await _employeeRepository.GetByIdAsync(id);
 
             if (employee == null)
                 return NotFound();
 
             employee.AppliedPromocodesCount++;
 
-            await _employeeRepository.UpdateAsync(employee);
+            await _employeeRepository.UpdateAsync(employee);*/
 
             return Ok();
         }

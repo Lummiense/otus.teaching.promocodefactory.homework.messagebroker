@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Otus.Teaching.Pcf.GivingToCustomer.Core.Abstractions.Repositories;
 using Otus.Teaching.Pcf.GivingToCustomer.Core.Domain;
 using Otus.Teaching.Pcf.GivingToCustomer.WebHost.Mappers;
 using Otus.Teaching.Pcf.GivingToCustomer.WebHost.Models;
+using Otus.Teaching.Pcf.GivingToCustomer.WebHost.Service;
+using Otus.Teaching.Pcf.Message;
 
 namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost.Controllers
 {
@@ -21,13 +24,15 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost.Controllers
         private readonly IRepository<PromoCode> _promoCodesRepository;
         private readonly IRepository<Preference> _preferencesRepository;
         private readonly IRepository<Customer> _customersRepository;
+        private readonly IPromoCodeService _promoCodeService;        
 
         public PromocodesController(IRepository<PromoCode> promoCodesRepository, 
-            IRepository<Preference> preferencesRepository, IRepository<Customer> customersRepository)
+            IRepository<Preference> preferencesRepository, IRepository<Customer> customersRepository, IPromoCodeService promoCodeService)
         {
             _promoCodesRepository = promoCodesRepository;
             _preferencesRepository = preferencesRepository;
             _customersRepository = customersRepository;
+            _promoCodeService = promoCodeService;
         }
         
         /// <summary>
@@ -59,7 +64,19 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost.Controllers
         [HttpPost]
         public async Task<IActionResult> GivePromoCodesToCustomersWithPreferenceAsync(GivePromoCodeRequest request)
         {
-            //Получаем предпочтение по имени
+
+            var dto = new GivePromoCodeToCustomerDto()
+            {
+                ServiceInfo = request.ServiceInfo,
+                PartnerId= request.PartnerId,
+                PromoCodeId = request.PromoCodeId,
+                PromoCode= request.PromoCode,
+                PreferenceId = request.PreferenceId,
+                BeginDate = request.BeginDate,
+                EndDate = request.EndDate
+            };
+            await _promoCodeService.GivePromoCodesToCustomersWithPreferenceAsync(dto);
+            /*  //Получаем предпочтение по имени
             var preference = await _preferencesRepository.GetByIdAsync(request.PreferenceId);
 
             if (preference == null)
@@ -74,7 +91,7 @@ namespace Otus.Teaching.Pcf.GivingToCustomer.WebHost.Controllers
 
             PromoCode promoCode = PromoCodeMapper.MapFromModel(request, preference, customers);
 
-            await _promoCodesRepository.AddAsync(promoCode);
+            await _promoCodesRepository.AddAsync(promoCode);*/
 
             return CreatedAtAction(nameof(GetPromocodesAsync), new { }, null);
         }
